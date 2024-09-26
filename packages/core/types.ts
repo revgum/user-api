@@ -9,6 +9,7 @@ export const ServiceErrorCodes = [
   "general.error",
   "entity.parsing.failed",
   "entity.validation.failed",
+  "entity.condition-check.failed",
   "entity.invalid",
   "entity.not-found",
   "entity.action.failed",

@@ -1,3 +1,4 @@
+import { ConditionalCheckFailedException } from "@aws-sdk/client-dynamodb";
 import {
   Table as DDBTable,
   DeleteItemCommand,
@@ -73,6 +74,14 @@ const buildError = (error: Error): ServiceError => {
           statusCode: constants.HTTP_STATUS_INTERNAL_SERVER_ERROR,
         });
     }
+  }
+  if (error instanceof ConditionalCheckFailedException) {
+    return new ServiceError({
+      detail: "Entity conditional check failed during persistence",
+      title: "Item persistence failed a condition check",
+      errorCode: "entity.condition-check.failed",
+      statusCode: constants.HTTP_STATUS_UNPROCESSABLE_ENTITY,
+    });
   }
   return ServiceError.fromError(error);
 };

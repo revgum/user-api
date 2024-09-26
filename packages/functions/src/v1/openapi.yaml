@@ -3,10 +3,16 @@ info:
   title: User API
   version: 1.0.0
   description: API for managing users
-
+servers:
+  - url: https://api.example.com/v1
+tags:
+  - name: users
+    description: Users API
 paths:
   /users:
     post:
+      tags:
+        - users
       summary: Create a new user
       requestBody:
         required: true
@@ -39,6 +45,14 @@ paths:
                 allOf:
                   - $ref: "#/components/schemas/MetaResponse"
                   - $ref: "#/components/schemas/ServiceErrorResponse"
+        "422":
+          description: User create failed, unprocessable entity
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
         "500":
           description: Internal server error
           content:
@@ -47,7 +61,8 @@ paths:
                 allOf:
                   - $ref: "#/components/schemas/MetaResponse"
                   - $ref: "#/components/schemas/ServiceErrorResponse"
-
+      security:
+        - Bearer: []
   /users/{userId}:
     parameters:
       - name: userId
@@ -56,8 +71,9 @@ paths:
         description: The ID of the user
         schema:
           type: string
-
     get:
+      tags:
+        - users
       summary: Retrieve a user by ID
       responses:
         "200":
@@ -100,7 +116,11 @@ paths:
                 allOf:
                   - $ref: "#/components/schemas/MetaResponse"
                   - $ref: "#/components/schemas/ServiceErrorResponse"
+      security:
+        - Bearer: []
     patch:
+      tags:
+        - users
       summary: Update an existing user
       requestBody:
         required: true
@@ -149,7 +169,11 @@ paths:
                 allOf:
                   - $ref: "#/components/schemas/MetaResponse"
                   - $ref: "#/components/schemas/ServiceErrorResponse"
+      security:
+        - Bearer: []
     put:
+      tags:
+        - users
       summary: Update an existing user
       requestBody:
         required: true
@@ -198,8 +222,11 @@ paths:
                 allOf:
                   - $ref: "#/components/schemas/MetaResponse"
                   - $ref: "#/components/schemas/ServiceErrorResponse"
-
+      security:
+        - Bearer: []
     delete:
+      tags:
+        - users
       summary: Delete a user
       responses:
         "204":
@@ -232,6 +259,8 @@ paths:
                 allOf:
                   - $ref: "#/components/schemas/MetaResponse"
                   - $ref: "#/components/schemas/ServiceErrorResponse"
+      security:
+        - Bearer: []
 components:
   schemas:
     MetaResponse:
@@ -343,3 +372,8 @@ components:
             - title
       required:
         - error
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
