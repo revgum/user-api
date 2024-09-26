@@ -48,7 +48,7 @@ describe("V1 Delete User API", () => {
         message: "User deleted",
       },
     });
-    expect(response.statusCode).toEqual(constants.HTTP_STATUS_OK);
+    expect(response.statusCode).toEqual(constants.HTTP_STATUS_NO_CONTENT);
   });
 
   it("returns an error payload when the request is missing the authorization header", async () => {

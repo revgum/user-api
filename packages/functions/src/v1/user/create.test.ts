@@ -54,7 +54,7 @@ describe("V1 Create User API", () => {
         },
       },
     });
-    expect(response.statusCode).toEqual(constants.HTTP_STATUS_OK);
+    expect(response.statusCode).toEqual(constants.HTTP_STATUS_CREATED);
   });
 
   it("returns an error payload when the request is missing the authorization header", async () => {

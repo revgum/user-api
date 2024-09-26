@@ -1,0 +1,345 @@
+openapi: 3.0.0
+info:
+  title: User API
+  version: 1.0.0
+  description: API for managing users
+
+paths:
+  /users:
+    post:
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCreateInput"
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/UserResponse"
+        "400":
+          description: API error response
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
+        "403":
+          description: API authorization failed, forbidden access
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
+
+  /users/{userId}:
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: The ID of the user
+        schema:
+          type: string
+
+    get:
+      summary: Retrieve a user by ID
+      responses:
+        "200":
+          description: User details
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/UserResponse"
+        "400":
+          description: API error response
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
+        "403":
+          description: API authorization failed, forbidden access
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
+    patch:
+      summary: Update an existing user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdateInput"
+      responses:
+        "200":
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/UserResponse"
+        "400":
+          description: API error response
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
+        "403":
+          description: API authorization failed, forbidden access
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
+    put:
+      summary: Update an existing user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdateInput"
+      responses:
+        "200":
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/UserResponse"
+        "400":
+          description: API error response
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
+        "403":
+          description: API authorization failed, forbidden access
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
+
+    delete:
+      summary: Delete a user
+      responses:
+        "204":
+          description: User deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteResponse"
+        "400":
+          description: API error response
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
+        "403":
+          description: API authorization failed, forbidden access
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MetaResponse"
+                  - $ref: "#/components/schemas/ServiceErrorResponse"
+components:
+  schemas:
+    MetaResponse:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            version:
+              type: string
+            requestId:
+              type: string
+          required:
+            - version
+            - requestId
+      required:
+        - meta
+    UserResponse:
+      type: object
+      properties:
+        payload:
+          type: object
+          properties:
+            user:
+              type: object
+              properties:
+                userId:
+                  type: string
+                name:
+                  type: string
+                dob:
+                  type: string
+                emails:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - userId
+                - name
+                - emails
+          required:
+            - user
+      required:
+        - payload
+    UserCreateInput:
+      type: object
+      properties:
+        userId:
+          type: string
+        name:
+          type: string
+        dob:
+          type: string
+        emails:
+          type: array
+          items:
+            type: string
+      required:
+        - userId
+        - name
+        - emails
+    UserUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        dob:
+          type: string
+        emails:
+          type: array
+          items:
+            type: string
+    DeleteResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    ServiceErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            detail:
+              type: string
+            errorCode:
+              type: string
+            statusCode:
+              type: string
+            title:
+              type: string
+            causedBy:
+              type: array
+              items:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  detail:
+                    type: string
+                  code:
+                    type: string
+          required:
+            - detail
+            - errorCode
+            - statusCode
+            - title
+      required:
+        - error

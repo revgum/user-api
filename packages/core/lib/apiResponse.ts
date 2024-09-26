@@ -5,8 +5,8 @@ import { ServiceError } from "./serviceError";
 export const payloadResponse = async (
   payload: any,
   ctx: ServiceContext,
-  meta: ApiResponseMeta = { version: "1.0.0" },
-  statusCode: number = 200
+  statusCode: number = 200,
+  meta: ApiResponseMeta = { version: "1.0.0" }
 ) => {
   meta.requestId = ctx.request.requestContext.requestId;
 

@@ -45,7 +45,7 @@ export async function main(
 
     const user = await put(data, true);
 
-    return payloadResponse({ user }, ctx);
+    return payloadResponse({ user }, ctx, constants.HTTP_STATUS_CREATED);
   } catch (error) {
     return errorResponse(error as Error, ctx);
   }
