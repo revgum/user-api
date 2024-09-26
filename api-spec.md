@@ -142,25 +142,25 @@ A valid API Key must be provided in the `Authorization` request header, see the 
 
 #### MetaResponse
 
-```json
+```typescript
 {
-  "meta": {
-    "version": "string",
-    "requestId": "string"
+  meta: {
+    version: string;
+    requestId: string;
   }
 }
 ```
 
 #### UserResponse
 
-```json
+```typescript
 {
-  "payload": {
-    "user": {
-      "userId": "string",
-      "name": "string",
-      "dob": "string",
-      "emails": ["string"]
+  payload: {
+    user: {
+      userId: string;
+      name: string;
+      dob?: string;
+      emails: string[];
     }
   }
 }
@@ -168,47 +168,47 @@ A valid API Key must be provided in the `Authorization` request header, see the 
 
 #### UserCreateInput
 
-```json
+```typescript
 {
-  "userId": "string",
-  "name": "string",
-  "dob": "string",
-  "emails": ["string"]
+  userId: string;
+  name: string;
+  dob?: string;
+  emails: string[];
 }
 ```
 
 #### UserUpdateInput
 
-```json
+```typescript
 {
-  "name": "string",
-  "dob": "string",
-  "emails": ["string"]
+  name?: string;
+  dob?: string;
+  emails?: string[];
 }
 ```
 
 #### DeleteResponse
 
-```json
+```typescript
 {
-  "message": "string"
+  message: string;
 }
 ```
 
 #### ServiceErrorResponse
 
-```json
+```typescript
 {
-  "error": {
-    "detail": "string",
-    "errorCode": "string",
-    "statusCode": "string",
-    "title": "string",
-    "causedBy": [
+  error: {
+    detail: string;
+    errorCode: string;
+    statusCode: string;
+    title: string;
+    causedBy?: [
       {
-        "title": "string",
-        "detail": "string",
-        "code": "string"
+        title: string;
+        detail: string;
+        code: string;
       }
     ]
   }
