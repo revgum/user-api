@@ -1,4 +1,4 @@
-Here's a Markdown document based on your OpenAPI v3 specification for the User API:
+The OpenAPI v3 [spec for this service](https://raw.githubusercontent.com/revgum/user-api/refs/heads/main/packages/functions/src/v1/openapi.yaml) was used to generate this markdown documentation. You can paste the contents of the spec in a Swagger editor for a better view of the documentation at [Swagger Editor](https://editor-next.swagger.io/).
 
 ---
 
