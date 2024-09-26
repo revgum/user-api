@@ -16,6 +16,8 @@ export const ServiceErrorCodes = [
   "api.validation.invalid",
   "api.request.missing",
   "api.request.invalid",
+  "api.authorization.missing",
+  "api.authentication.failed",
 ] as const;
 
 export type ServiceErrorCode = (typeof ServiceErrorCodes)[number];
@@ -25,6 +27,7 @@ export type ServiceContext = {
   cloudWatch: CloudWatchClient;
   documentClient: DynamoDBDocumentClient;
   startTime: number;
+  session?: { isLoggedIn: boolean; userId: string };
 };
 
 export type ApiResponseMeta = {

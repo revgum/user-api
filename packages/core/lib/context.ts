@@ -6,6 +6,7 @@ import {
   APIGatewayProxyEventV2WithRequestContext,
 } from "aws-lambda";
 import { ServiceContext } from "../types";
+import { authenticate } from "./auth";
 
 export const dynamoDb = new DynamoDBClient();
 
@@ -20,9 +21,21 @@ export const cloudWatch = new CloudWatchClient();
 
 export const getServiceContext = (args: {
   request: APIGatewayProxyEventV2WithRequestContext<APIGatewayEventRequestContextV2>;
-}): ServiceContext => ({
-  request: args.request,
-  cloudWatch,
-  documentClient,
-  startTime: performance.now(),
-});
+}): ServiceContext => {
+  return {
+    request: args.request,
+    cloudWatch,
+    documentClient,
+    startTime: performance.now(),
+  };
+};
+
+export const authenticateUser = (ctx: ServiceContext) => {
+  const { isLoggedIn, userId } = authenticate(
+    ctx.request.headers.authorization
+  );
+  ctx.session = {
+    isLoggedIn,
+    userId,
+  };
+};

@@ -1,6 +1,9 @@
 import { destroy } from "@user-api/core/entities/user";
 import { errorResponse, payloadResponse } from "@user-api/core/lib/apiResponse";
-import { getServiceContext } from "@user-api/core/lib/context";
+import {
+  authenticateUser,
+  getServiceContext,
+} from "@user-api/core/lib/context";
 import {
   APIGatewayEventRequestContextV2,
   APIGatewayProxyEventV2WithRequestContext,
@@ -12,6 +15,8 @@ export async function main(
   const ctx = getServiceContext({ request });
 
   try {
+    authenticateUser(ctx);
+
     await destroy(ctx.request.pathParameters!.id!);
 
     return payloadResponse({ message: "User deleted" }, ctx);

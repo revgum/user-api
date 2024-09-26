@@ -1,6 +1,8 @@
-import { Api, StackContext, Table } from "sst/constructs";
+import { Api, Config, StackContext, Table } from "sst/constructs";
 
 export function UserStack({ stack }: StackContext) {
+  const API_KEY = new Config.Secret(stack, "API_KEY");
+
   const table = new Table(stack, "User", {
     fields: {
       pk: "string",
@@ -12,7 +14,7 @@ export function UserStack({ stack }: StackContext) {
   const api = new Api(stack, "UserApi", {
     defaults: {
       function: {
-        bind: [table],
+        bind: [API_KEY, table],
         permissions: ["cloudwatch:PutMetricData"],
       },
     },

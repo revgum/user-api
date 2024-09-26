@@ -19,6 +19,9 @@ export const mockRequest = (
   const body = typeof obj === "string" ? obj : JSON.stringify(obj);
   return {
     body,
+    headers: {
+      authorization: "Bearer test-api-key",
+    },
     requestContext: {
       apiId: "test-api-id",
       http: {
