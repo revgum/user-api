@@ -1,4 +1,8 @@
 import {
+  CloudWatchClient,
+  PutMetricDataCommand,
+} from "@aws-sdk/client-cloudwatch";
+import {
   DynamoDBDocumentClient,
   GetCommand,
   PutCommand,
@@ -12,6 +16,7 @@ import { main } from "./update";
 
 describe("V1 Update User API", () => {
   const ddbMock = mockClient(DynamoDBDocumentClient);
+  const cwMock = mockClient(CloudWatchClient);
 
   const user = mockUser();
   const timestamp = new Date().toISOString();
@@ -40,10 +45,12 @@ describe("V1 Update User API", () => {
         emails: new Set(user.emails),
       },
     });
+    cwMock.on(PutMetricDataCommand).resolves({});
   });
 
   afterEach(() => {
     ddbMock.reset();
+    cwMock.reset();
   });
 
   it("returns a user payload when a user is updated", async () => {

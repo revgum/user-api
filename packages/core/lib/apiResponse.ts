@@ -1,67 +1,31 @@
-import {
-  PutMetricDataCommand,
-  PutMetricDataInput,
-} from "@aws-sdk/client-cloudwatch";
-import { APIGatewayEventRequestContextV2 } from "aws-lambda";
-import { ApiResponseMeta } from "../types";
-import { cloudWatch } from "./context";
+import { ApiResponseMeta, ServiceContext } from "../types";
+import { emit } from "./metrics";
 import { ServiceError } from "./serviceError";
-
-/**
- * Emit general metrics for API payload and error responses to get some observability
- * into the health and usage of endpoints.
- *
- * TODO: enable "cloudwatch:PutMetricData" action on auto-generated role
- */
-const emitMetric = async (args: {
-  name: string;
-  requestContext: APIGatewayEventRequestContextV2;
-  statusCode: number;
-  value?: number;
-}) => {
-  const metric: PutMetricDataInput = {
-    Namespace: args.requestContext.apiId,
-    MetricData: [
-      {
-        MetricName: args.name,
-        Value: args.value,
-        Dimensions: [
-          {
-            Name: "path",
-            Value: args.requestContext.http.path,
-          },
-          {
-            Name: "status_code",
-            Value: args.statusCode.toString(),
-          },
-          {
-            Name: "stage",
-            Value: args.requestContext.stage,
-          },
-        ],
-      },
-    ],
-  };
-
-  return cloudWatch.send(new PutMetricDataCommand(metric));
-};
 
 export const payloadResponse = async (
   payload: any,
-  requestContext: APIGatewayEventRequestContextV2,
+  ctx: ServiceContext,
   meta: ApiResponseMeta = { version: "1.0.0" },
   statusCode: number = 200
 ) => {
-  meta.requestId = requestContext.requestId;
+  meta.requestId = ctx.request.requestContext.requestId;
 
-  /* TODO: enable "cloudwatch:PutMetricData" action on auto-generated role
-  await emitMetric({
-    name: "payload_response",
-    value: 1,
-    requestContext,
-    statusCode,
-  });
-  */
+  await Promise.all([
+    emit({
+      name: "payload_response",
+      metricKind: "increment",
+      value: 1,
+      ctx,
+      statusCode,
+    }),
+    emit({
+      name: "payload_response_ms",
+      metricKind: "time",
+      value: performance.now() - ctx.startTime,
+      ctx,
+      statusCode,
+    }),
+  ]);
 
   return {
     statusCode,
@@ -74,7 +38,7 @@ export const payloadResponse = async (
 
 export const errorResponse = async (
   err: ServiceError | Error,
-  requestContext: APIGatewayEventRequestContextV2,
+  ctx: ServiceContext,
   meta: ApiResponseMeta = { version: "1.0.0" }
 ) => {
   let error: ServiceError = err as ServiceError;
@@ -82,16 +46,24 @@ export const errorResponse = async (
     error = ServiceError.fromError(err);
   }
 
-  meta.requestId = requestContext.requestId;
+  meta.requestId = ctx.request.requestContext.requestId;
 
-  /* TODO: enable "cloudwatch:PutMetricData" action on auto-generated role
-  await emitMetric({
-    name: "error_response",
-    value: 1,
-    requestContext,
-    statusCode: error.statusCode,
-  });
-  */
+  await Promise.all([
+    emit({
+      name: "error_response",
+      metricKind: "increment",
+      value: 1,
+      ctx,
+      statusCode: error.statusCode,
+    }),
+    emit({
+      name: "error_response_ms",
+      metricKind: "time",
+      value: performance.now() - ctx.startTime,
+      ctx,
+      statusCode: error.statusCode,
+    }),
+  ]);
 
   return {
     statusCode: error.statusCode,

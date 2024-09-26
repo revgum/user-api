@@ -1,6 +1,7 @@
 import { get, put } from "@user-api/core/entities/user";
 import { parseRequestBody } from "@user-api/core/lib/apiRequest";
 import { errorResponse, payloadResponse } from "@user-api/core/lib/apiResponse";
+import { getServiceContext } from "@user-api/core/lib/context";
 import { ServiceError } from "@user-api/core/lib/serviceError";
 import {
   APIGatewayEventRequestContextV2,
@@ -9,14 +10,14 @@ import {
 import { constants } from "http2";
 import { UpdateUserRequestSchema } from "./validation/update";
 
-export async function main({
-  body,
-  pathParameters,
-  requestContext,
-}: APIGatewayProxyEventV2WithRequestContext<APIGatewayEventRequestContextV2>) {
+export async function main(
+  request: APIGatewayProxyEventV2WithRequestContext<APIGatewayEventRequestContextV2>
+) {
+  const ctx = getServiceContext({ request });
+
   try {
-    const id = pathParameters!.id!;
-    const payload = parseRequestBody(body);
+    const id = ctx.request.pathParameters!.id!;
+    const payload = parseRequestBody(ctx.request.body);
 
     const { error, data } = UpdateUserRequestSchema.safeParse(payload);
     if (error) {
@@ -45,13 +46,8 @@ export async function main({
 
     const updatedUser = await put({ ...data, userId: id }, true);
 
-    return payloadResponse(
-      {
-        user: updatedUser,
-      },
-      requestContext
-    );
+    return payloadResponse({ user: updatedUser }, ctx);
   } catch (error) {
-    return errorResponse(error as Error, requestContext);
+    return errorResponse(error as Error, ctx);
   }
 }

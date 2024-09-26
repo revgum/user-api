@@ -1,3 +1,7 @@
+import {
+  CloudWatchClient,
+  PutMetricDataCommand,
+} from "@aws-sdk/client-cloudwatch";
 import { DynamoDBDocumentClient, GetCommand } from "@aws-sdk/lib-dynamodb";
 import { mockClient } from "aws-sdk-client-mock";
 import { constants } from "http2";
@@ -8,6 +12,7 @@ import { main } from "./get";
 
 describe("V1 Get User API", () => {
   const ddbMock = mockClient(DynamoDBDocumentClient);
+  const cwMock = mockClient(CloudWatchClient);
 
   const user = mockUser();
   const timestamp = new Date().toISOString();
@@ -25,10 +30,12 @@ describe("V1 Get User API", () => {
         emails: new Set(user.emails),
       },
     });
+    cwMock.on(PutMetricDataCommand).resolves({});
   });
 
   afterEach(() => {
     ddbMock.reset();
+    cwMock.reset();
   });
 
   it("returns a user payload when a user is found", async () => {

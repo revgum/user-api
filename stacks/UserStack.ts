@@ -13,6 +13,7 @@ export function UserStack({ stack }: StackContext) {
     defaults: {
       function: {
         bind: [table],
+        permissions: ["cloudwatch:PutMetricData"],
       },
     },
     routes: {

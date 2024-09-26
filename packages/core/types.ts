@@ -1,3 +1,10 @@
+import { CloudWatchClient } from "@aws-sdk/client-cloudwatch";
+import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+import {
+  APIGatewayEventRequestContextV2,
+  APIGatewayProxyEventV2WithRequestContext,
+} from "aws-lambda";
+
 export const ServiceErrorCodes = [
   "general.error",
   "entity.parsing.failed",
@@ -12,6 +19,13 @@ export const ServiceErrorCodes = [
 ] as const;
 
 export type ServiceErrorCode = (typeof ServiceErrorCodes)[number];
+
+export type ServiceContext = {
+  request: APIGatewayProxyEventV2WithRequestContext<APIGatewayEventRequestContextV2>;
+  cloudWatch: CloudWatchClient;
+  documentClient: DynamoDBDocumentClient;
+  startTime: number;
+};
 
 export type ApiResponseMeta = {
   version: string;

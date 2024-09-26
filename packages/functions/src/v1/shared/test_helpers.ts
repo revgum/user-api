@@ -22,8 +22,9 @@ export const mockRequest = (
     requestContext: {
       apiId: "test-api-id",
       http: {
-        path: "/test/api/path",
+        method: "GET",
       },
+      routeKey: "GET /test/route/{id}",
       requestId: "test-request-id",
       stage: "test-stage",
     },
