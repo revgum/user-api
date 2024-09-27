@@ -6,19 +6,19 @@ import {
 } from "aws-lambda";
 
 export const ServiceErrorCodes = [
-  "general.error",
-  "entity.parsing.failed",
-  "entity.validation.failed",
+  "api.authentication.failed",
+  "api.authorization.missing",
+  "api.request.invalid",
+  "api.request.missing",
+  "api.validation.failed",
+  "api.validation.invalid",
+  "entity.action.failed",
   "entity.condition-check.failed",
   "entity.invalid",
   "entity.not-found",
-  "entity.action.failed",
-  "api.validation.failed",
-  "api.validation.invalid",
-  "api.request.missing",
-  "api.request.invalid",
-  "api.authorization.missing",
-  "api.authentication.failed",
+  "entity.parsing.failed",
+  "entity.validation.failed",
+  "general.error",
 ] as const;
 
 export type ServiceErrorCode = (typeof ServiceErrorCodes)[number];
