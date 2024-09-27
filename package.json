@@ -2,24 +2,22 @@
   "name": "user-api",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "sst dev",
     "build": "sst build",
     "deploy": "sst deploy",
     "remove": "sst remove",
-    "secrets:list": "sst secrets list",
-    "secrets:set": "sst secrets set",
+    "secrets:list": "sst secret list",
+    "secrets:set": "sst secret set",
     "console": "sst console",
     "typecheck": "tsc --noEmit",
     "prettier": "prettier --check .",
     "prettier:fix": "prettier --write .",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "test": "sst bind vitest"
+    "test": "sst vitest"
   },
   "devDependencies": {
-    "@aws-cdk/cx-api": "^2.159.1",
     "@aws-sdk/client-cloudwatch": "^3.656.0",
     "@aws-sdk/client-dynamodb": "^3.656.0",
     "@aws-sdk/lib-dynamodb": "^3.656.0",
@@ -27,21 +25,21 @@
     "@tsconfig/node20": "^20.1.4",
     "@types/aws-lambda": "8.10.145",
     "@types/validator": "^13.12.2",
-    "aws-cdk-lib": "^2.159.1",
     "aws-sdk-client-mock": "^4.0.2",
-    "constructs": "10.3.0",
     "dynamodb-toolbox": "1.9.3",
     "eslint": "^9.11.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "prettier": "^3.3.3",
-    "sst": "^2.43.7",
     "typescript": "^5.6.2",
     "typescript-eslint": "^8.7.0",
     "validator": "^13.12.0",
     "vite-tsconfig-paths": "^5.0.1",
     "vitest": "^2.1.1",
     "zod": "^3.23.8"
+  },
+  "dependencies": {
+    "sst": "^3"
   },
   "workspaces": [
     "packages/*"

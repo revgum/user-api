@@ -1,21 +1,22 @@
 {
   "name": "@user-api/functions",
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "test": "sst bind vitest",
+    "test": "sst shell vitest",
     "typecheck": "tsc -noEmit"
   },
   "devDependencies": {
-    "@aws-sdk/client-cloudwatch": "^3.656.0",
-    "@aws-sdk/client-dynamodb": "^3.656.0",
-    "@aws-sdk/lib-dynamodb": "^3.656.0",
     "@types/aws-lambda": "^8.10.145",
     "@types/node": "^22.6.1",
     "dynamodb-toolbox": "1.9.3",
-    "sst": "^2.43.7",
     "vite-tsconfig-paths": "^5.0.1",
     "vitest": "^2.1.1",
     "zod": "^3.23.8"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cloudwatch": "^3.656.0",
+    "@aws-sdk/client-dynamodb": "^3.656.0",
+    "@aws-sdk/lib-dynamodb": "^3.656.0",
+    "sst": "^3"
   }
 }

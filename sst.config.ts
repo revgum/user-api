@@ -1,14 +1,21 @@
-import { SSTConfig } from "sst";
-import { UserStack } from "./stacks/UserStack";
+/// <reference path="./.sst/platform/config.d.ts" />
 
-export default {
-  config(_input) {
+export default $config({
+  app(input) {
     return {
       name: "user-api",
       region: "us-east-1",
+      home: "aws",
     };
   },
-  stacks(app) {
-    app.stack(UserStack);
+  async run() {
+    const api = await import("./infra/api");
+    await import("./infra/storage");
+    const web = await import("./infra/web");
+
+    return {
+      Region: aws.getRegionOutput().name,
+      SwaggerUI: web.frontend.url,
+    };
   },
-} satisfies SSTConfig;
+});

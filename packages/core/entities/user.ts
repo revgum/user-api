@@ -12,7 +12,7 @@ import {
   string,
 } from "dynamodb-toolbox";
 import { constants } from "http2";
-import { Table } from "sst/node/table";
+import { Resource } from "sst";
 import isBase64 from "validator/es/lib/isBase64";
 import isDate from "validator/es/lib/isDate";
 import isEmail from "validator/es/lib/isEmail";
@@ -23,7 +23,7 @@ import { User, UserData } from "../types";
 // Using dynamodb-toolbox, we define and bind the table to the resource
 // provisioned by SST
 export const UserTable = new DDBTable({
-  name: Table.User.tableName,
+  name: Resource.User.name,
   documentClient,
   partitionKey: {
     name: "pk",

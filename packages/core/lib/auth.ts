@@ -1,10 +1,10 @@
 import { randomUUID } from "crypto";
-import { Config } from "sst/node/config";
+import { Resource } from "sst";
 import { ServiceError } from "./serviceError";
 import { constants } from "http2";
 
 const API_KEY =
-  process.env.TEST === "true" ? process.env.API_KEY : Config.API_KEY;
+  process.env.TEST === "true" ? process.env.API_KEY : Resource.API_KEY;
 
 /**
  * A very basic API auth solution using a secret API_KEY that must be included in the

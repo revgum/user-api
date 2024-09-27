@@ -18,7 +18,13 @@
 
 ### Getting Started
 
-#### Setup API_KEY secret
+**Install node packages**
+
+```bash
+npm i
+```
+
+**Setup API_KEY secret**
 
 Each deployed stage will require a secret `API_KEY` created to allow access to the API.
 (**_This authentication solution is not intended for production purposes and should be improved for any serious deployments._**)
