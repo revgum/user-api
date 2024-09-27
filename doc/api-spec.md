@@ -153,7 +153,7 @@ This SST stack is deployed with a static site configured to host a basic Swagger
 - **Properties**:
   - `meta`: object
     - **Properties**:
-      - `version`: string (required)
+      - `version`: string (required, default: `1.0.0`)
       - `requestId`: string (required)
 
 ### User
@@ -162,25 +162,33 @@ This SST stack is deployed with a static site configured to host a basic Swagger
 - **Properties**:
   - `user`: object
     - **Properties**:
-      - `userId`: string (required)
+      - `userId`: string (required, allows base64 urlencoded values)
+        - Example: `my-user-id`
       - `name`: string (required)
-      - `dob`: string (optional)
-      - `emails`: array of strings (maxItems: 3, uniqueItems: true) (required)
+      - `dob`: string (optional, allows YYYY-MM-DD format)
+        - Example: `1914-02-12`
+      - `emails`: array of strings (required, maxItems: 3, uniqueItems: true, allows email format)
+        - Example: `me@example.com`
 
 ### UserCreateInput
 
 - **Properties**:
-  - `userId`: string (required)
+  - `userId`: string (required, allows base64 urlencoded values)
+    - Example: `my-user-id`
   - `name`: string (required)
-  - `dob`: string (optional)
-  - `emails`: array of strings (maxItems: 3, uniqueItems: true) (required)
+  - `dob`: string (optional, allows YYYY-MM-DD format)
+    - Example: `1914-02-12`
+  - `emails`: array of strings (required, maxItems: 3, uniqueItems: true, allows email format)
+    - Example: `me@example.com`
 
 ### UserUpdateInput
 
 - **Properties**:
   - `name`: string (optional)
-  - `dob`: string (optional)
-  - `emails`: array of strings (optional, uniqueItems: true)
+  - `dob`: string (optional, allows YYYY-MM-DD format)
+    - Example: `1914-02-12`
+  - `emails`: array of strings (optional, maxItems: 3, uniqueItems: true, allows email format)
+    - Example: `me@example.com`
 
 ### Message
 
