@@ -29,7 +29,7 @@ Run the following command and supply the API key value for `<your-key-here>`:
 npm run secrets:set API_KEY <your-key-here>
 ```
 
-## [Testing](docs/testing.md)
+## [Testing](doc/testing.md)
 
 ## Deployment
 
