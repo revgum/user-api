@@ -1,4 +1,5 @@
 import { Api, Config, StackContext, Table, StaticSite } from "sst/constructs";
+import { v1Routes } from "../packages/functions/src/v1/routes";
 
 export function UserStack({ stack }: StackContext) {
   const API_KEY = new Config.Secret(stack, "API_KEY");
@@ -10,7 +11,6 @@ export function UserStack({ stack }: StackContext) {
     primaryIndex: { partitionKey: "pk" },
   });
 
-  // Create the HTTP API
   const api = new Api(stack, "UserApi", {
     defaults: {
       function: {
@@ -19,11 +19,7 @@ export function UserStack({ stack }: StackContext) {
       },
     },
     routes: {
-      "GET /v1/users/{id}": "packages/functions/src/v1/user/get.main",
-      "POST /v1/users": "packages/functions/src/v1/user/create.main",
-      "DELETE /v1/users/{id}": "packages/functions/src/v1/user/delete.main",
-      "PUT /v1/users/{id}": "packages/functions/src/v1/user/update.main",
-      "PATCH /v1/users/{id}": "packages/functions/src/v1/user/update.main",
+      ...v1Routes,
     },
   });
 
@@ -35,9 +31,8 @@ export function UserStack({ stack }: StackContext) {
     },
   });
 
-  // Show the API endpoint in the output
   stack.addOutputs({
     ApiEndpoint: api.url,
-    SiteUrl: site.url,
+    SwaggerSiteUrl: site.url,
   });
 }

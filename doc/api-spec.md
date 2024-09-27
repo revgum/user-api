@@ -1,4 +1,6 @@
-The OpenAPI v3 [spec for this service](https://raw.githubusercontent.com/revgum/user-api/refs/heads/main/packages/functions/src/v1/openapi.yaml) was used to generate this document. You can paste the contents of the spec in a Swagger editor for a better view of the documentation at [Swagger Editor](https://editor-next.swagger.io/).
+The OpenAPI v3 [spec for this service](https://raw.githubusercontent.com/revgum/user-api/refs/heads/main/packages/site/openapi.yaml) was used to generate this document.
+
+This SST stack is deployed with a static site configured to host a basic SwaggerUI to view the API spec, the URL to the Cloudfront distribution hosting the website will be displayed on deploy (`SwaggerSiteUrl`).
 
 ---
 
