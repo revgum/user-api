@@ -1,4 +1,4 @@
-import { Api, Config, StackContext, Table } from "sst/constructs";
+import { Api, Config, StackContext, Table, StaticSite } from "sst/constructs";
 
 export function UserStack({ stack }: StackContext) {
   const API_KEY = new Config.Secret(stack, "API_KEY");
@@ -27,8 +27,17 @@ export function UserStack({ stack }: StackContext) {
     },
   });
 
+  const site = new StaticSite(stack, "SwaggerUI", {
+    path: "packages/site",
+    waitForInvalidation: process.env.IS_LOCAL ? false : true,
+    dev: {
+      deploy: true,
+    },
+  });
+
   // Show the API endpoint in the output
   stack.addOutputs({
     ApiEndpoint: api.url,
+    SiteUrl: site.url,
   });
 }
