@@ -7,9 +7,9 @@ import { randomUUID } from "crypto";
 
 export const mockUser = (obj?: User) => ({
   userId: obj?.userId || randomUUID(),
-  dob: obj?.dob || "dob",
+  dob: obj?.dob || "1902-02-01",
   name: obj?.name || "name",
-  emails: obj?.emails || [randomUUID(), randomUUID(), randomUUID()],
+  emails: obj?.emails || ["email@example.com"],
 });
 
 export const mockRequest = (

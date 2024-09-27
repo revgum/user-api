@@ -13,6 +13,9 @@ import {
 } from "dynamodb-toolbox";
 import { constants } from "http2";
 import { Table } from "sst/node/table";
+import isBase64 from "validator/es/lib/isBase64";
+import isDate from "validator/es/lib/isDate";
+import isEmail from "validator/es/lib/isEmail";
 import { documentClient } from "../lib/context";
 import { ServiceError } from "../lib/serviceError";
 import { User, UserData } from "../types";
@@ -35,13 +38,33 @@ export const UserEntity = new Entity({
   name: "User",
   table: UserTable,
   schema: schema({
-    userId: string().savedAs("pk").key(),
+    userId: string()
+      .savedAs("pk")
+      .key()
+      .validate((userId: string) => isBase64(userId, { urlSafe: true })),
     emails: set(string())
       .required()
-      .validate((emails) =>
-        emails.size <= 3 ? true : "Max number of emails exceeded"
+      .validate((emails) => {
+        const size = emails.size;
+        if (size >= 3) {
+          return "Max number of emails exceeded";
+        }
+        let errors = [];
+        for (const email of emails.values()) {
+          if (!isEmail(email, { allow_underscores: true })) {
+            errors.push(email);
+          }
+        }
+        if (errors.length) {
+          return `Invalid emails: [${errors.join(", ")}]`;
+        }
+        return true;
+      }),
+    dob: string()
+      .optional()
+      .validate((dob) =>
+        isDate(dob, { format: "YYYY-MM-DD", strictMode: true })
       ),
-    dob: string().optional(),
     name: string(),
   }),
 });

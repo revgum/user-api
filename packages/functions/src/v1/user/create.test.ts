@@ -147,7 +147,12 @@ describe("V1 Create User API", () => {
   it("returns an error payload with validation error when the user has too many emails", async () => {
     const request = mockRequest({
       ...user,
-      emails: [...user.emails, "another"],
+      emails: [
+        ...user.emails,
+        "two@example.com",
+        "three@example.com",
+        "four@example.com",
+      ],
     });
     const response = await main(request);
     const responseBody = JSON.parse(response.body);
@@ -164,6 +169,81 @@ describe("V1 Create User API", () => {
             code: "too_big",
             title: "Array must contain at most 3 element(s)",
             detail: "Object field path : emails",
+          },
+        ],
+      },
+    });
+    expect(response.statusCode).toEqual(constants.HTTP_STATUS_BAD_REQUEST);
+  });
+
+  it("returns an error payload with validation error when the user has an invalid email", async () => {
+    const request = mockRequest({
+      ...user,
+      emails: [...user.emails, "another"],
+    });
+    const response = await main(request);
+    const responseBody = JSON.parse(response.body);
+
+    expect(response.headers["Content-Type"]).toEqual("application/json");
+    expect(responseBody).toMatchObject({
+      meta: { version: "1.0.0", requestId: expect.any(String) },
+      error: {
+        code: "api.validation.failed",
+        detail: "Create user payload failed to parse",
+        title: "Create user failed",
+        causedBy: [
+          {
+            code: "invalid_string",
+            title: "Invalid email",
+            detail: "Object field path : emails.1",
+          },
+        ],
+      },
+    });
+    expect(response.statusCode).toEqual(constants.HTTP_STATUS_BAD_REQUEST);
+  });
+
+  it("returns an error payload with validation error when the user has an invalid dob", async () => {
+    const request = mockRequest({ ...user, dob: "20000101" });
+    const response = await main(request);
+    const responseBody = JSON.parse(response.body);
+
+    expect(response.headers["Content-Type"]).toEqual("application/json");
+    expect(responseBody).toMatchObject({
+      meta: { version: "1.0.0", requestId: expect.any(String) },
+      error: {
+        code: "api.validation.failed",
+        detail: "Create user payload failed to parse",
+        title: "Create user failed",
+        causedBy: [
+          {
+            code: "invalid_string",
+            title: "Invalid date",
+            detail: "Object field path : dob",
+          },
+        ],
+      },
+    });
+    expect(response.statusCode).toEqual(constants.HTTP_STATUS_BAD_REQUEST);
+  });
+
+  it("returns an error payload with validation error when the user has an invalid userId", async () => {
+    const request = mockRequest({ ...user, userId: "bad id" });
+    const response = await main(request);
+    const responseBody = JSON.parse(response.body);
+
+    expect(response.headers["Content-Type"]).toEqual("application/json");
+    expect(responseBody).toMatchObject({
+      meta: { version: "1.0.0", requestId: expect.any(String) },
+      error: {
+        code: "api.validation.failed",
+        detail: "Create user payload failed to parse",
+        title: "Create user failed",
+        causedBy: [
+          {
+            code: "custom",
+            title: "'bad id' is an invalid userId, is must be urlencoded",
+            detail: "Object field path : userId",
           },
         ],
       },
