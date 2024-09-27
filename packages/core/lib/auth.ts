@@ -6,6 +6,13 @@ import { constants } from "http2";
 const API_KEY =
   process.env.TEST === "true" ? process.env.API_KEY : Config.API_KEY;
 
+/**
+ * A very basic API auth solution using a secret API_KEY that must be included in the
+ * "Authorization" header formatted as "Bearer <API_KEY>". Not designed for use
+ * in production, you should implement handling proper JWT and/or persisting sessions.
+ * @param authorization The value from the "Authorization" header
+ * @returns an isLoggedIn flag and a userId for the authenticated user
+ */
 export const authenticate = (
   authorization?: string
 ): { isLoggedIn: boolean; userId: string } => {
