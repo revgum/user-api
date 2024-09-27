@@ -15,7 +15,7 @@
     "prettier:fix": "prettier --write .",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "test": "sst vitest"
+    "test": "sst shell vitest"
   },
   "devDependencies": {
     "@aws-sdk/client-cloudwatch": "^3.656.0",
