@@ -38,5 +38,12 @@ By default a local stage is built for development purposes, using the `npm run d
 ### Manually deploy `production`
 
 ```base
+# Make sure you have set an API_KEY for production one time
+npm run secrets:set API_KEY <your-key-here> -- --stage production
+```
+
+**Deploy the stack**
+
+```
 npm run deploy -- --stage production
 ```
