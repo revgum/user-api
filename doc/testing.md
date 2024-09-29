@@ -21,7 +21,7 @@ npm run test
 
    ✔  Deployed:
    UserStack
-   ApiEndpoint: https://rzwdu6kbqk.execute-api.us-east-1.amazonaws.com
+   ApiEndpoint: https://rzwdu6kbqk.execute-api.us-west-2.amazonaws.com
    SwaggerSiteUrl: https://d1zjl3d1h1ddq4.cloudfront.net
 
    ```
@@ -40,13 +40,16 @@ curl --header "Content-Type:application/json" --header "Authorization: Bearer <A
 # Create a user, a second API call with the same userId will fail because the user exists
 curl --header "Content-Type:application/json" --header "Authorization: Bearer <API-KEY-HERE>" --data '{"userId": "my-user-id","emails":["email@example.com"],"name":"Example User","dob":"1902-01-23"}' <API-ENDPOINT-URL-HERE>/v1/users
 
-# Update the user, can use PUT or PATCH
+# Update the full user record with a PUT; emails provided are only additive, excluding "dob" will remove the field
 curl --header "Content-Type:application/json" --header "Authorization: Bearer <API-KEY-HERE>" -X PUT --data '{"emails":["another_email@example.com"],"name":"Updated Name"}' <API-ENDPOINT-URL-HERE>/v1/users/my-user-id
+
+# Update part of the user record with a PATCH; emails provided are only additive
+curl --header "Content-Type:application/json" --header "Authorization: Bearer <API-KEY-HERE>" -X PUT --data '{"dob":"1912-02-04"}' <API-ENDPOINT-URL-HERE>/v1/users/my-user-id
 
 # Get the user
 curl --header "Content-Type:application/json" --header "Authorization: Bearer <API-KEY-HERE>" <API-ENDPOINT-URL-HERE>/v1/users/my-user-id
 
-# Try and invalid user
+# Get an invalid user
 curl --header "Content-Type:application/json" --header "Authorization: Bearer <API-KEY-HERE>" <API-ENDPOINT-URL-HERE>/v1/users/thisuserISNOTfound
 
 # Failure examples with invalid data fields

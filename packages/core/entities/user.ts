@@ -10,6 +10,11 @@ import {
   schema,
   set,
   string,
+  UpdateItemCommand,
+  UpdateItemInput,
+  $remove,
+  $get,
+  $add,
 } from "dynamodb-toolbox";
 import { constants } from "http2";
 import { Resource } from "sst";
@@ -65,7 +70,7 @@ export const UserEntity = new Entity({
       .validate((dob) =>
         isDate(dob, { format: "YYYY-MM-DD", strictMode: true })
       ),
-    name: string(),
+    name: string().required(),
   }),
 });
 
@@ -137,14 +142,11 @@ export const get = async (id: string): Promise<User> => {
   }
 };
 
-export const put = async (
-  user: Partial<User>,
-  existenceCheck = false
-): Promise<User> => {
+export const put = async (user: User): Promise<User> => {
   try {
     const item: PutItemInput<typeof UserEntity> = {
-      userId: user.userId!,
-      name: user.name!,
+      userId: user.userId,
+      name: user.name,
       dob: user.dob,
       emails: new Set(user.emails),
     };
@@ -152,10 +154,7 @@ export const put = async (
     const { ToolboxItem: Item } = await UserEntity.build(PutItemCommand)
       .item(item)
       .options({
-        returnValues: "ALL_OLD",
-        condition: existenceCheck
-          ? { attr: "userId", exists: false }
-          : undefined,
+        condition: { attr: "userId", exists: false },
       })
       .send();
 
@@ -163,7 +162,7 @@ export const put = async (
       throw new ServiceError({
         errorCode: "entity.action.failed",
         statusCode: constants.HTTP_STATUS_BAD_REQUEST,
-        detail: "The user failed to create or update",
+        detail: "The user failed to create",
         title: "User action failed",
       });
     }
@@ -172,6 +171,53 @@ export const put = async (
     throw buildError(error as Error);
   }
 };
+
+export const patch = async (
+  user: Partial<User>,
+  userId: User["userId"],
+  patch: boolean = true
+): Promise<User> => {
+  try {
+    const { name, dob, emails } = user;
+
+    let item: UpdateItemInput<typeof UserEntity> = {
+      userId,
+      emails: emails ? $add(new Set(emails)) : $get("emails"),
+      name: name ?? $get("name"),
+    };
+
+    if (patch && dob) {
+      item.dob = dob;
+    }
+    if (!patch && !dob) {
+      item.dob = $remove();
+    }
+
+    const { Attributes: Item } = await UserEntity.build(UpdateItemCommand)
+      .item(item)
+      .options({
+        returnValues: "ALL_NEW",
+        condition: { attr: "userId", exists: true },
+      })
+      .send();
+
+    if (!Item) {
+      throw new ServiceError({
+        errorCode: "entity.action.failed",
+        statusCode: constants.HTTP_STATUS_BAD_REQUEST,
+        detail: "The user failed to update",
+        title: "User action failed",
+      });
+    }
+    return asUser(Item);
+  } catch (error: unknown) {
+    console.dir(error, { depth: null });
+    throw buildError(error as Error);
+  }
+};
+
+export const update = async (user: User): Promise<User> =>
+  patch(user, user.userId, false);
 
 export const destroy = async (userId: string): Promise<void> => {
   try {

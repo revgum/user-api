@@ -12,9 +12,9 @@ import { constants } from "http2";
 import { afterEach } from "node:test";
 import { beforeEach, describe, expect, it } from "vitest";
 import { mockRequest, mockUser } from "../shared/test_helpers";
-import { main } from "./update";
+import { main } from "./patch";
 
-describe("V1 Update User API", () => {
+describe("V1 Patch User API", () => {
   const ddbMock = mockClient(DynamoDBDocumentClient);
   const cwMock = mockClient(CloudWatchClient);
 
@@ -53,7 +53,7 @@ describe("V1 Update User API", () => {
     cwMock.reset();
   });
 
-  it("returns a user payload when a user is updated", async () => {
+  it("returns a user payload when a user is patched", async () => {
     const request = mockRequest(user, user.userId);
     const response = await main(request);
     const responseBody = JSON.parse(response.body);
@@ -126,7 +126,7 @@ describe("V1 Update User API", () => {
   });
 
   it("returns the user disregarding invalid payload fields", async () => {
-    const request = mockRequest({ ...user, bad: "field" }, user.userId);
+    const request = mockRequest({ bad: "field" }, user.userId);
     const response = await main(request);
     const responseBody = JSON.parse(response.body);
 
@@ -163,8 +163,8 @@ describe("V1 Update User API", () => {
       meta: { version: "1.0.0", requestId: expect.any(String) },
       error: {
         code: "api.validation.failed",
-        detail: "Update user payload failed to parse",
-        title: "Update user failed",
+        detail: "Patch user payload failed to parse",
+        title: "Patch user failed",
         causedBy: [
           {
             code: "too_big",
@@ -190,8 +190,8 @@ describe("V1 Update User API", () => {
       meta: { version: "1.0.0", requestId: expect.any(String) },
       error: {
         code: "api.validation.failed",
-        detail: "Update user payload failed to parse",
-        title: "Update user failed",
+        detail: "Patch user payload failed to parse",
+        title: "Patch user failed",
         causedBy: [
           {
             code: "invalid_string",
@@ -214,8 +214,8 @@ describe("V1 Update User API", () => {
       meta: { version: "1.0.0", requestId: expect.any(String) },
       error: {
         code: "api.validation.failed",
-        detail: "Update user payload failed to parse",
-        title: "Update user failed",
+        detail: "Patch user payload failed to parse",
+        title: "Patch user failed",
         causedBy: [
           {
             code: "invalid_string",
