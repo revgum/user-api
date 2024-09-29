@@ -4,7 +4,7 @@ import { ServiceError } from "./serviceError";
 import { constants } from "http2";
 
 const API_KEY =
-  process.env.TEST === "true" ? process.env.API_KEY : Resource.API_KEY;
+  process.env.TEST === "true" ? process.env.API_KEY : Resource.API_KEY.value;
 
 /**
  * A very basic API auth solution using a secret API_KEY that must be included in the
