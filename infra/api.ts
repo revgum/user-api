@@ -6,6 +6,12 @@ export const api = new sst.aws.ApiGatewayV2("Api", {
     route: {
       handler: {
         link: [table, secret],
+        permissions: [
+          {
+            actions: ["cloudwatch:PutMetricData"],
+            resources: ["*"],
+          },
+        ],
       },
     },
   },
