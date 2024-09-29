@@ -1,4 +1,4 @@
-import { get, put } from "@user-api/core/entities/user";
+import { get, update } from "@user-api/core/entities/user";
 import { parseRequestBody } from "@user-api/core/lib/apiRequest";
 import { errorResponse, payloadResponse } from "@user-api/core/lib/apiResponse";
 import {
@@ -11,7 +11,7 @@ import {
   APIGatewayProxyEventV2WithRequestContext,
 } from "aws-lambda";
 import { constants } from "http2";
-import { UpdateUserRequestSchema } from "./validation/update";
+import { UpdateUserRequestSchema } from "./validation/schemas";
 
 export async function main(
   request: APIGatewayProxyEventV2WithRequestContext<APIGatewayEventRequestContextV2>
@@ -44,12 +44,7 @@ export async function main(
       });
     }
     const user = await get(id);
-
-    data.emails = data.emails ? data.emails.concat(user.emails) : user.emails;
-    data.dob = data.dob ?? user.dob;
-    data.name = data.name ?? user.name;
-
-    const updatedUser = await put({ ...data, userId: id }, true);
+    const updatedUser = await update({ ...data, userId: user.userId });
 
     return payloadResponse({ user: updatedUser }, ctx);
   } catch (error) {

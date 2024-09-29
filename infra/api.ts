@@ -24,4 +24,4 @@ api.route(
   "packages/functions/src/v1/user/delete.main"
 );
 api.route("PUT /v1/users/{id}", "packages/functions/src/v1/user/update.main");
-api.route("PATCH /v1/users/{id}", "packages/functions/src/v1/user/update.main");
+api.route("PATCH /v1/users/{id}", "packages/functions/src/v1/user/patch.main");

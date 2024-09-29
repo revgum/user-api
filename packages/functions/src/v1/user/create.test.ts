@@ -242,7 +242,7 @@ describe("V1 Create User API", () => {
         causedBy: [
           {
             code: "custom",
-            title: "'bad id' is an invalid userId, is must be urlencoded",
+            title: "'bad id' is an invalid userId, it must be urlencoded",
             detail: "Object field path : userId",
           },
         ],

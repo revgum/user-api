@@ -69,13 +69,13 @@ paths:
     patch:
       tags:
         - users
-      summary: Update an existing user
+      summary: Update field(s) of an existing user.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserUpdateInput"
+              $ref: "#/components/schemas/UserPatchInput"
       responses:
         "200":
           $ref: "#/components/responses/UserResponse"
@@ -178,6 +178,15 @@ components:
               - $ref: "#/components/schemas/Meta"
               - $ref: "#/components/schemas/ServiceError"
   schemas:
+    Message:
+      type: object
+      properties:
+        message:
+          type: string
+          examples:
+            - User was deleted
+      required:
+        - message
     Meta:
       type: object
       properties:
@@ -194,108 +203,6 @@ components:
             - requestId
       required:
         - meta
-    User:
-      type: object
-      description: |
-        A User may have up to 3 unique email addresses. Email addresses can be added but not removed from a User.
-      properties:
-        user:
-          type: object
-          properties:
-            userId:
-              type: string
-              description: Must be a base64 urlencoded value.
-              examples:
-                - my-user-id
-            name:
-              type: string
-              examples:
-                - My Name
-            dob:
-              type: string
-              description: Must be in YYYY-MM-DD format.
-              examples:
-                - 1902-01-21
-            emails:
-              type: array
-              description: Must be formatted as valid email addresses.
-              items:
-                type: string
-              maxItems: 3
-              uniqueItems: true
-              examples:
-                - '["email@example.com"]'
-          required:
-            - userId
-            - name
-            - emails
-      required:
-        - user
-    UserCreateInput:
-      type: object
-      properties:
-        userId:
-          type: string
-          description: Must be a base64 urlencoded value.
-          examples:
-            - my-user-id
-        name:
-          type: string
-          examples:
-            - My Name
-        dob:
-          type: string
-          description: Must be in YYYY-MM-DD format.
-          examples:
-            - 1902-01-21
-        emails:
-          type: array
-          description: Must be formatted as valid email addresses.
-          items:
-            type: string
-          maxItems: 3
-          uniqueItems: true
-          examples:
-            - '["email@example.com"]'
-      required:
-        - userId
-        - name
-        - emails
-    UserUpdateInput:
-      type: object
-      properties:
-        userId:
-          type: string
-          description: Must be a base64 urlencoded value.
-          examples:
-            - my-user-id
-        name:
-          type: string
-          examples:
-            - My Name
-        dob:
-          type: string
-          description: Must be in YYYY-MM-DD format.
-          examples:
-            - 1902-01-21
-        emails:
-          type: array
-          description: Must be formatted as valid email addresses.
-          items:
-            type: string
-          maxItems: 3
-          uniqueItems: true
-          examples:
-            - '["email@example.com"]'
-    Message:
-      type: object
-      properties:
-        message:
-          type: string
-          examples:
-            - User was deleted
-      required:
-        - message
     ServiceError:
       type: object
       properties:
@@ -368,6 +275,118 @@ components:
             - title
       required:
         - error
+    User:
+      type: object
+      description: |
+        A User may have up to 3 unique email addresses. Email addresses can be added but not removed from a User.
+      properties:
+        user:
+          type: object
+          properties:
+            userId:
+              type: string
+              description: Must be a base64 urlencoded value.
+              examples:
+                - my-user-id
+            name:
+              type: string
+              examples:
+                - My Name
+            dob:
+              type: string
+              description: Must be in YYYY-MM-DD format.
+              examples:
+                - 1902-01-21
+            emails:
+              type: array
+              description: Must be formatted as valid email addresses. Emails can only be added to this system, the emails list is made to be unique during create, update and patch actions.
+              items:
+                type: string
+              maxItems: 3
+              uniqueItems: true
+              examples:
+                - '["email@example.com"]'
+          required:
+            - userId
+            - name
+            - emails
+      required:
+        - user
+    UserCreateInput:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Must be a base64 urlencoded value.
+          examples:
+            - my-user-id
+        name:
+          type: string
+          examples:
+            - My Name
+        dob:
+          type: string
+          description: Must be in YYYY-MM-DD format.
+          examples:
+            - 1902-01-21
+        emails:
+          type: array
+          description: Must be formatted as valid email addresses. Emails can only be added to this system, the emails provided here will be added and the result list will be made unique.
+          items:
+            type: string
+          maxItems: 3
+          uniqueItems: true
+          examples:
+            - '["email@example.com"]'
+      required:
+        - userId
+        - name
+        - emails
+    UserPatchInput:
+      type: object
+      properties:
+        name:
+          type: string
+          examples:
+            - My Name
+        dob:
+          type: string
+          description: Must be in YYYY-MM-DD format.
+          examples:
+            - 1902-01-21
+        emails:
+          type: array
+          description: Must be formatted as valid email addresses. Emails can only be added to this system, the emails provided here will be added and the result list will be made unique.
+          items:
+            type: string
+          maxItems: 3
+          uniqueItems: true
+          examples:
+            - '["email@example.com"]'
+    UserUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+          examples:
+            - My Name
+        dob:
+          type: string
+          description: Must be in YYYY-MM-DD format.
+          examples:
+            - 1902-01-21
+        emails:
+          type: array
+          description: Must be formatted as valid email addresses. Emails can only be added to this system, the emails provided here will be added and the result list will be made unique.
+          items:
+            type: string
+          maxItems: 3
+          uniqueItems: true
+          examples:
+            - '["email@example.com"]'
+      required:
+        - name
+        - emails
   securitySchemes:
     Bearer:
       type: apiKey

@@ -39,10 +39,10 @@ export type ApiResponseMeta = {
 export type UserData = {
   emails: Set<string>;
   userId: string;
-  name?: string;
+  name: string;
   dob?: string;
-  created: string;
-  modified: string;
+  created?: string;
+  modified?: string;
 };
 
 export interface User extends Omit<UserData, "pk" | "sk" | "emails"> {
