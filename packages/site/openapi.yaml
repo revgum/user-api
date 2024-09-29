@@ -299,7 +299,7 @@ components:
                 - 1902-01-21
             emails:
               type: array
-              description: Must be formatted as valid email addresses. Emails can only be added to this system, the emails list is made to be unique during create, update and patch actions.
+              description: Must be formatted as valid email addresses. Emails can only be added to the user, the emails list is made to be unique during create, update and patch actions.
               items:
                 type: string
               maxItems: 3
@@ -331,7 +331,7 @@ components:
             - 1902-01-21
         emails:
           type: array
-          description: Must be formatted as valid email addresses. Emails can only be added to this system, the emails provided here will be added and the result list will be made unique.
+          description: Must be formatted as valid email addresses. Emails can only be added to the user, the emails provided here will be added and the result list will be made unique.
           items:
             type: string
           maxItems: 3
@@ -356,7 +356,7 @@ components:
             - 1902-01-21
         emails:
           type: array
-          description: Must be formatted as valid email addresses. Emails can only be added to this system, the emails provided here will be added and the result list will be made unique.
+          description: Must be formatted as valid email addresses. Emails can only be added to the user, the emails provided here will be added and the result list will be made unique.
           items:
             type: string
           maxItems: 3
@@ -377,7 +377,7 @@ components:
             - 1902-01-21
         emails:
           type: array
-          description: Must be formatted as valid email addresses. Emails can only be added to this system, the emails provided here will be added and the result list will be made unique.
+          description: Must be formatted as valid email addresses. Emails can only be added to the user, the emails provided here will be added and the result list will be made unique.
           items:
             type: string
           maxItems: 3
