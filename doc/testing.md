@@ -17,12 +17,13 @@ npm run test
    ```bash
    npm run dev
 
-   ...build output...
+   ...
 
-   ✔  Deployed:
-   UserStack
-   ApiEndpoint: https://rzwdu6kbqk.execute-api.us-west-2.amazonaws.com
-   SwaggerSiteUrl: https://d1zjl3d1h1ddq4.cloudfront.net
+   ✔  Complete:
+   Api: https://rzwdu6kbqk.execute-api.us-west-2.amazonaws.com
+   ---
+   Region: us-west-2
+   SwaggerUI: https://url-unavailable-in-dev.mode
 
    ```
 
