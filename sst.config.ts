@@ -1,16 +1,20 @@
 /// <reference path="./.sst/platform/config.d.ts" />
 
 export default $config({
-  app(input) {
+  app(_input) {
     return {
       name: "user-api",
-      region: "us-east-1",
       home: "aws",
+      providers: {
+        aws: {
+          region: "us-west-2",
+        },
+      },
     };
   },
   async run() {
-    const api = await import("./infra/api");
     await import("./infra/storage");
+    await import("./infra/api");
     const web = await import("./infra/web");
 
     return {
